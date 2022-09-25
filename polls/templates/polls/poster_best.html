@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+{% load template_tag %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<!--====== Bootstrap CSS ======-->
+<link rel="stylesheet" href="{% static 'polls/bootstrap.min.css' %}"/>
+
+<!--====== Lineicons CSS ======-->
+<link href="{% static 'polls/lineicons-free-basic-3.0/icon-font/lineicons.css' %}" rel="stylesheet">
+
+<!--====== Style css ======-->
+<link rel="stylesheet" href="{% static 'polls/starter.css' %}"/>
+
+<script type="text/javascript" src="{% static 'polls/js/jquery-3.6.0.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'polls/js/myJs.js' %}"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Best</title>
+</head>
+<body>
+
+<!--====== NAVBAR ONE PART START ======-->
+<section class="navbar-area navbar-one">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg">
+
+                    <div class="nav">
+                        <a style="width: 250px; height: 60px;" class="navbar-brand">
+                            <img src="{% static 'polls/logo/cms_2.png' %}" alt="Logo"/>
+                        </a>
+                        <button
+                                class="navbar-toggler"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarOne"
+                                aria-controls="navbarOne"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                        >
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                        <ul class="navbar-nav m-auto">
+                            <li class="nav-item">
+                                <a href="{% url 'polls:home' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a>
+                                    Division
+                                    <div class="sub-nav-toggler">
+                                        <span><i class="lni lni-chevron-down"></i></span>
+                                    </div>
+                                </a>
+                                <ul class="sub-menu collapse" id="sub-nav1"
+                                    style="width: 130px; height: 180px; opacity: 0.95">
+                                    <form action="{% url 'polls:home' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <li>
+                                            <button type="submit" name="dst" value="True" class="btn my-navbar-btn">
+                                                DST
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dbm" value="True" class="btn my-navbar-btn">
+                                                DBM
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dcc" value="True" class="btn my-navbar-btn">
+                                                DCC
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dhss" value="True" class="btn my-navbar-btn">
+                                                DHSS
+                                            </button>
+                                        </li>
+                                    </form>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:best' %}">Best Poster</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:popular' %}">Popular Poster</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav justify-content-end">
+                        {% if is_login == False %}
+                            <div class="navbar-btn d-none d-sm-inline-block">
+                                <ul>
+                                    <li>
+                                        <a class="btn primary-btn-outline" href="{% url 'polls:login' 'attendee' %}">attendee</a>
+                                    </li>
+                                    <li>
+                                        <a class="btn primary-btn-outline"
+                                           href="{% url 'polls:login' 'staff' %}">staff</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                                <ul class="navbar-nav m-auto">
+                                    <li class="nav-item">
+                                        <a style="text-transform: lowercase;">
+                                            {% if email != False %}
+                                                {{ email }}
+                                            {% else %}
+                                                staff mode
+                                            {% endif %}
+                                            <div class="sub-nav-toggler">
+                                                <span><i class="lni lni-chevron-down"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="sub-menu collapse" id="sub-nav1">
+                                            <li>
+                                                <a href="{% url 'polls:logout' %}">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </nav>
+                <!-- navbar -->
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+</section>
+<!--====== NAVBAR ONE PART ENDS ======-->
+
+<!--====== Bootstrap js ======-->
+<script src="{% static 'polls/free-ui-components-main/assets/js/bootstrap.bundle.min.js' %}"></script>
+
+<script>
+    //===== close navbar-collapse when a  clicked
+    let navbarTogglerOne = document.querySelector(
+        ".navbar-one .navbar-toggler"
+    );
+    navbarTogglerOne.addEventListener("click", function () {
+        navbarTogglerOne.classList.toggle("active");
+    });
+</script>
+
+{% if all_finished == 0 %}
+
+    <div style="display: flex; justify-content: center; align-items: center; margin: 20px;">
+
+        <a style="font-size: 30px;">The grading is still in progress...</a>
+
+    </div>
+
+{% else %}
+
+<div class="container pt-5" style="width: 500px;">
+
+    {% for poster in best_posters %}
+
+        <div class="row my-container">
+            <div class="my-container-inner">
+                <a>{{ poster.division }}'s</a><hr>
+                <a href="{% url 'polls:detail' poster.title %}" style="font-size: 24px; color: var(--primary-dark)">{{ poster.title }}</a>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+</body>
+</html>

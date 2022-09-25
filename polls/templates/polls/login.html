@@ -1,0 +1,259 @@
+<html>
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<!--====== Bootstrap CSS ======-->
+<link rel="stylesheet" href="{% static 'polls/bootstrap.min.css' %}"/>
+
+<!--====== Lineicons CSS ======-->
+<link href="{% static 'polls/lineicons-free-basic-3.0/icon-font/lineicons.css' %}" rel="stylesheet">
+
+<!--====== Style css ======-->
+<link rel="stylesheet" href="{% static 'polls/starter.css' %}"/>
+
+<header>
+    <title>CMS</title>
+</header>
+
+<body>
+
+{% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+            {% if page_stay == 'login' %}
+                window.location.href = "{% url 'polls:home' %}";
+            {% endif %}
+        {% endfor %}
+    </script>
+{% endif %}
+
+
+<!--====== NAVBAR ONE PART START ======-->
+<section class="navbar-area navbar-one">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg">
+
+                    <div class="nav">
+                        <a style="width: 250px; height: 60px;" class="navbar-brand">
+                            <img src="{% static 'polls/logo/cms_2.png' %}" alt="Logo"/>
+                        </a>
+                        <button
+                                class="navbar-toggler"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarOne"
+                                aria-controls="navbarOne"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                        >
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                        <ul class="navbar-nav m-auto">
+                            <li class="nav-item">
+                                <a href="{% url 'polls:home' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a>
+                                    Division
+                                    <div class="sub-nav-toggler">
+                                        <span><i class="lni lni-chevron-down"></i></span>
+                                    </div>
+                                </a>
+                                <ul class="sub-menu collapse" id="sub-nav1"
+                                    style="width: 130px; height: 180px; opacity: 0.95">
+                                    <form action="{% url 'polls:home' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <li>
+                                            <button type="submit" name="dst" value="True" class="btn my-navbar-btn">
+                                                DST
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dbm" value="True" class="btn my-navbar-btn">
+                                                DBM
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dcc" value="True" class="btn my-navbar-btn">
+                                                DCC
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dhss" value="True" class="btn my-navbar-btn">
+                                                DHSS
+                                            </button>
+                                        </li>
+                                    </form>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:best' %}">Best Poster</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:popular' %}">Popular Poster</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav justify-content-end">
+                        <div style="width: 250px;">
+                            <div class="navbar-btn d-none d-sm-inline-block">
+                                <ul>
+                                    <li>
+                                        <a class="btn primary-btn-outline"
+                                           href="{% url 'polls:login' login_type='attendee' %}">attendee</a>
+                                    </li>
+                                    <li>
+                                        <a class="btn primary-btn-outline"
+                                           href="{% url 'polls:login' login_type='staff' %}">staff</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </nav>
+                <!-- navbar -->
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+</section>
+<!--====== NAVBAR ONE PART ENDS ======-->
+
+<!--====== Bootstrap js ======-->
+<script src="{% static 'polls/free-ui-components-main/assets/js/bootstrap.bundle.min.js' %}"></script>
+
+<script>
+    //===== close navbar-collapse when a  clicked
+    let navbarTogglerOne = document.querySelector(
+        ".navbar-one .navbar-toggler"
+    );
+    navbarTogglerOne.addEventListener("click", function () {
+        navbarTogglerOne.classList.toggle("active");
+    });
+</script>
+
+
+<!--====== SIGNIN ONE PART START ======-->
+<section class="signin-area signin-one">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+
+                {% if login_type == 'attendee' %}
+
+                    <form action="{% url 'polls:login' 'attendee' %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="signin-form form-style-two rounded-buttons">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-input">
+                                        <label>Your account will be under this email</label>
+                                        <div class="input-items default">
+                                            <input type="email" placeholder="Email" name="email"/>
+                                            <i class="lni lni-envelope"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-9">
+                                    <div class="form-input">
+                                        <label>Verify code for your account</label>
+                                        <div class="input-items default">
+                                            <input type="password" placeholder="Verify code" name="password"/>
+                                            <i class="lni lni-key"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-input">
+                                        <label>Varify email</label>
+                                        <div class="input-items default">
+                                            <button type="submit" name="verify" value="True" class="btn primary-btn"
+                                                    style="height: 42px; padding: 0; text-align: center;"> Verify
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-input rounded-buttons">
+                                        <br>
+                                        <button
+                                                class="btn primary-btn rounded-full"
+                                                type="submit"
+                                                name="login"
+                                                value="True"
+                                        >
+                                            Sign as attendee
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+                {% elif login_type == 'staff' %}
+
+                    <form action="{% url 'polls:login' 'staff' %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="signin-form form-style-two rounded-buttons">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-input">
+                                        <label>Password for your account</label>
+                                        <div class="input-items default">
+                                            <input type="password" placeholder="Password" name="password"/>
+                                            <i class="lni lni-key"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-input rounded-buttons">
+                                        <br>
+                                        <button
+                                                class="btn primary-btn rounded-full"
+                                                type="submit"
+                                        >
+                                            Sign as staff
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+                {% endif %}
+
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+</section>
+<!--====== SIGNIN ONE PART ENDS ======-->
+
+
+</body>
+
+</html>

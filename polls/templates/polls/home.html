@@ -1,0 +1,330 @@
+<html>
+
+{% load static %}
+{% load template_tag %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<!--====== Bootstrap CSS ======-->
+<link rel="stylesheet" href="{% static 'polls/bootstrap.min.css' %}"/>
+
+<!--====== Lineicons CSS ======-->
+<link href="{% static 'polls/lineicons-free-basic-3.0/icon-font/lineicons.css' %}" rel="stylesheet">
+
+<!--====== Style css ======-->
+<link rel="stylesheet" href="{% static 'polls/starter.css' %}"/>
+
+<header>
+    <title>CMS</title>
+</header>
+
+<body>
+
+<!--====== If messages, show them firstly ======-->
+{% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+{% endif %}
+
+<!--====== NAVBAR ONE PART START ======-->
+<section class="navbar-area navbar-one">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg">
+
+                    <div class="nav">
+                        <a style="width: 250px; height: 60px;" class="navbar-brand">
+                            <img src="{% static 'polls/logo/cms_2.png' %}" alt="Logo"/>
+                        </a>
+                        <button
+                                class="navbar-toggler"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarOne"
+                                aria-controls="navbarOne"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                        >
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                        <ul class="navbar-nav m-auto">
+                            <li class="nav-item">
+                                <a href="{% url 'polls:home' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a>
+                                    Division
+                                    <div class="sub-nav-toggler">
+                                        <span><i class="lni lni-chevron-down"></i></span>
+                                    </div>
+                                </a>
+                                <ul class="sub-menu collapse" id="sub-nav1"
+                                    style="width: 130px; height: 180px; opacity: 0.95">
+                                    <form action="{% url 'polls:home' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <li>
+                                            <button type="submit" name="dst" value="True" class="btn my-navbar-btn">
+                                                DST
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dbm" value="True" class="btn my-navbar-btn">
+                                                DBM
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dcc" value="True" class="btn my-navbar-btn">
+                                                DCC
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dhss" value="True" class="btn my-navbar-btn">
+                                                DHSS
+                                            </button>
+                                        </li>
+                                    </form>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:best' %}">Best Poster</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:popular' %}">Popular Poster</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav justify-content-end">
+                        {% if is_login == False %}
+                            <div class="navbar-btn d-none d-sm-inline-block">
+                                <ul>
+                                    <li>
+                                        <a class="btn primary-btn-outline" href="{% url 'polls:login' 'attendee' %}">attendee</a>
+                                    </li>
+                                    <li>
+                                        <a class="btn primary-btn-outline"
+                                           href="{% url 'polls:login' 'staff' %}">staff</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                                <ul class="navbar-nav m-auto">
+                                    <li class="nav-item">
+                                        <a style="text-transform: lowercase;">
+                                            {% if email != False %}
+                                                {{ email }}
+                                            {% else %}
+                                                staff mode
+                                            {% endif %}
+                                            <div class="sub-nav-toggler">
+                                                <span><i class="lni lni-chevron-down"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="sub-menu collapse" id="sub-nav1">
+                                            <li>
+                                                <a href="{% url 'polls:logout' %}">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </nav>
+                <!-- navbar -->
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+</section>
+<!--====== NAVBAR ONE PART ENDS ======-->
+
+
+<!--====== Search START ======-->
+
+<div class="form-style form-style-four">
+    <div class="container">
+        <div class="col-lg-12">
+
+            <form action="{% url 'polls:home' %}" method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="form-input mt-5">
+                    <div class="input-items active">
+                        <input style="opacity: 0.6; border-radius: 10px;" type="text" name="search" placeholder="Pleach input what you want to search:"/>
+                        <i class="lni lni-search"></i>
+                    </div>
+                    <div style="margin: 10px;
+							display: flex;
+							justify-content: center;
+							align-items: center;">
+                        <input type="submit" class="btn my-primary-btn" value="Search"/>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--====== Search END ======-->
+<br>
+
+<!-- Anchor -->
+<a name="poster_page_head"></a>
+
+<!--====== TEAM STYLE ONE START ======-->
+<section class="team-area">
+    <div class="container">
+        <p style="font-size: 16px; font-weight: 600;" about="{{ num_poster }}">{{ num_poster }} result(s)</p>
+        <div class="row">
+            {% for contact in page_obj %}
+
+                <div class="col-lg-4 col-md-8">
+                    <div class="single-team text-center team-style-one">
+                        <div class="team-image">
+
+                            <img src="{% static contact.file_path %}" alt="My image"/>
+
+                        </div>
+                        <div class="team-content">
+                            <h4 class="name">{{ contact.title }}</h4>
+                            <span class="sub-title">{{ contact.author }}</span>
+                            <ul class="social">
+                                <li>
+                                    <a href="{% url 'polls:vote' contact.title %}">
+                                        <i class="lni lni-ticket-alt"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'polls:detail' contact.title %}">
+                                        <i class="lni lni-license"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'polls:download' contact.title %}">
+                                        <i class="lni lni-download"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+</section>
+<!--====== TEAM STYLE ONE ENDS ======-->
+
+
+<!--====== Pagination START ======-->
+<div class="pagination" style="display: flex; justify-content: center; align-items: center; margin: 20px;">
+
+    {% if num_poster == 0 %}
+        No posters found, please try other keywords
+    {% else %}
+
+        <span class="step-links">
+
+		<ul class="d-flex flex-wrap mb-4">
+			{% if page_obj.has_previous %}
+                <li class="me-3 mb-3"><a href="?page=1#poster_page_head" class="btn primary-btn-outline">first</a></li>
+                <li class="me-3 mb-3"><a href="?page={{ page_obj.previous_page_number }}#poster_page_head"
+                                         class="btn primary-btn-outline">previous</a></li>
+            {% endif %}
+
+            <li class="me-3 mb-3">
+				<span class="current" style="
+				height: 46px; font-size: 18px;
+				font-weight: 600; line-height: 46px;">
+					Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+				</span>
+			</li>
+
+            {% if page_obj.has_next %}
+                <li class="me-3 mb-3"><a href="?page={{ page_obj.next_page_number }}#poster_page_head"
+                                         class="btn primary-btn-outline">next</a></li>
+                <li class="me-3 mb-3"><a href="?page={{ page_obj.paginator.num_pages }}#poster_page_head"
+                                         class="btn primary-btn-outline">last</a></li>
+            {% endif %}
+		</ul>
+
+    </span>
+
+    {% endif %}
+
+</div>
+<!--====== Pagination ENDS ======-->
+
+<!--====== FOOTER ONE PART START ======-->
+<footer class="footer-area footer-one">
+    <!-- footer widget -->
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div
+                            class="
+                  copyright
+                  text-center
+                  d-md-flex
+                  justify-content-between
+                  align-items-center
+                  "
+                    >
+                        <p class="text">Copyright © 2022 Alpha. All Rights Reserved</p>
+                        <ul class="social">
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="lni lni-facebook-filled"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="lni lni-twitter-original"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="lni lni-instagram-filled"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)"
+                                ><i class="lni lni-linkedin-original"></i
+                                ></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- copyright -->
+                </div>
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!-- footer copyright -->
+</footer>
+<!--====== FOOTER ONE PART ENDS ======-->
+
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+{% load template_tag %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<!--====== Bootstrap CSS ======-->
+<link rel="stylesheet" href="{% static 'polls/bootstrap.min.css' %}"/>
+
+<!--====== Lineicons CSS ======-->
+<link href="{% static 'polls/lineicons-free-basic-3.0/icon-font/lineicons.css' %}" rel="stylesheet">
+
+<!--====== Style css ======-->
+<link rel="stylesheet" href="{% static 'polls/starter.css' %}"/>
+
+<script type="text/javascript" src="{% static 'polls/js/jquery-3.6.0.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'polls/js/myJs.js' %}"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Prog-Judge</title>
+</head>
+<body>
+
+<!--====== If messages, show them firstly ======-->
+{% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+{% endif %}
+
+<!--====== NAVBAR ONE PART START ======-->
+<section class="navbar-area navbar-one">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg">
+
+                    <div class="nav">
+                        <a style="width: 250px; height: 60px;" class="navbar-brand">
+                            <img src="{% static 'polls/logo/cms_2.png' %}" alt="Logo"/>
+                        </a>
+                        <button
+                                class="navbar-toggler"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarOne"
+                                aria-controls="navbarOne"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                        >
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                        <ul class="navbar-nav m-auto">
+                            <li class="nav-item">
+                                <a href="{% url 'polls:programme_judge' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a>
+                                    Division
+                                    <div class="sub-nav-toggler">
+                                        <span><i class="lni lni-chevron-down"></i></span>
+                                    </div>
+                                </a>
+                                <ul class="sub-menu collapse" id="sub-nav1"
+                                    style="width: 130px; height: 180px; opacity: 0.95">
+                                    <form action="{% url 'polls:home' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <li>
+                                            <button type="submit" name="dst" value="True" class="btn my-navbar-btn">
+                                                DST
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dbm" value="True" class="btn my-navbar-btn">
+                                                DBM
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dcc" value="True" class="btn my-navbar-btn">
+                                                DCC
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="dhss" value="True" class="btn my-navbar-btn">
+                                                DHSS
+                                            </button>
+                                        </li>
+                                    </form>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:best' %}">Best Poster</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'polls:popular' %}">Popular Poster</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav justify-content-end" style="width: 250px;">
+                        {% if is_login == False %}
+                            <div class="navbar-btn d-none d-sm-inline-block">
+                                <ul>
+                                    <li>
+                                        <a class="btn primary-btn-outline" href="{% url 'polls:login' 'attendee' %}">attendee</a>
+                                    </li>
+                                    <li>
+                                        <a class="btn primary-btn-outline"
+                                           href="{% url 'polls:login' 'staff' %}">staff</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                                <ul class="navbar-nav m-auto">
+                                    <li class="nav-item">
+                                        <a style="text-transform: lowercase;">
+                                            {{ position }}
+                                            <div class="sub-nav-toggler">
+                                                <span><i class="lni lni-chevron-down"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="sub-menu collapse" id="sub-nav1">
+                                            <li>
+                                                <a href="{% url 'polls:logout' %}">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </nav>
+                <!-- navbar -->
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+</section>
+<!--====== NAVBAR ONE PART ENDS ======-->
+
+
+<br>
+<!--======  Start Section Title One ======-->
+<div class="section-title-one">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <div class="content">
+                        <h2 class="fw-bold">Welcome, {{ programme }} Regular Judge!</h2>
+                        <p>
+                            Please rate the poster.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+</div>
+<!--====== ABOUT TWO PART ENDS ======-->
+
+{% if score_status > 0 %}
+
+    <div style="display: flex; justify-content: center; align-items: center; margin: 20px; font-size: 30px;">
+
+        You have finished your work, thank you.
+
+    </div>
+
+{% else %}
+
+<form action="{% url 'polls:programme_judge' %}" method="post" enctype="multipart/form-data" id="programmeForm">
+
+    {% csrf_token %}
+
+    <!--====== TEAM STYLE ONE START ======-->
+    <section class="team-area">
+        <div class="container">
+
+        <a style="font-size: 16px; font-weight: 600;" id="num_poster_programme">{{ num_poster }}</a> <a style="font-size: 16px; font-weight: 600;">result(s)</a>
+
+            <div class="row">
+
+                {% for poster in poster_list %}
+
+                    <div class="col-lg-4 col-md-8">
+                        <div class="single-team text-center team-style-one">
+                            <div class="team-image">
+
+                                <img src="{% static poster.file_path %}" alt="My image"/>
+
+                            </div>
+                            <div class="team-content">
+                                <h4 class="name">{{ poster.title }}</h4>
+
+                                <div style="margin: 10px;">
+
+                                    <input class="my-programme-input my-programme-rate" type="number" min="0" max="100"
+                                           name="{{ poster.title }}"/>
+                                    <a>/ 100</a>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </section>
+    <!--====== TEAM STYLE ONE ENDS ======-->
+
+</form>
+
+<div style="margin: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;">
+<button disabled class="btn my-primary-btn" type="submit" form="programmeForm" value="Submit" id="programme_judge_button">Submit</button>
+</div>
+
+{% endif %}
+
+<!--====== FOOTER ONE PART START ======-->
+<footer class="footer-area footer-one">
+    <!-- footer widget -->
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div
+                            class="
+				   copyright
+				   text-center
+				   d-md-flex
+				   justify-content-between
+				   align-items-center
+				   "
+                    >
+                        <p class="text">Copyright © 2022 Alpha. All Rights Reserved</p>
+                        <ul class="social">
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="lni lni-facebook-filled"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="lni lni-twitter-original"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="lni lni-instagram-filled"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)"
+                                ><i class="lni lni-linkedin-original"></i
+                                ></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- copyright -->
+                </div>
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!-- footer copyright -->
+</footer>
+<!--====== FOOTER ONE PART ENDS ======-->
+
+
+</body>
+</html>

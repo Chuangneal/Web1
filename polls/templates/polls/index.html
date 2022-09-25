@@ -1,0 +1,33 @@
+
+
+<html lang="en">
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<script type="text/javascript" src="{% static 'polls/js/jquery-3.6.0.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'polls/js/myJs.js' %}"></script>
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Polls</title>
+
+</head>
+<body>
+
+<h1>Testing!</h1><br>
+
+<div class="form">
+
+    <div>用户名:<input name="name" data-name="name"/></div>
+    <div>密码:<input name="paw" data-name="paw" /></div>
+    <div>年龄:<input name="age" data-name="age" /></div>
+    <button disabled id="save_btn">提交</button>
+
+</div>
+
+</body>
+</html>
